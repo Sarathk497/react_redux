@@ -61,6 +61,10 @@ const List = () => {
             display: "grid",
             gridTemplateColumns: "repeat(3, 1fr)",
             gap: "10px",
+            padding: "10px",
+            maxWidth: "1200px",
+            margin: "0 auto", 
+            backgroundColor: "#f5f5f5",
           }}
         >
           {filteredPosts.map((post) => (
@@ -74,7 +78,14 @@ const List = () => {
               }}
             >
               <h3>User ID: {post.userId}</h3>
-              <p>{post.title}</p>
+              <p>
+                <b>Title: </b>
+                {post.title}
+              </p>
+              <p>
+                <b>Body: </b>
+                {post.body}
+              </p>
             </div>
           ))}
         </div>
