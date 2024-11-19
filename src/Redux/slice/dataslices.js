@@ -3,7 +3,6 @@ import axios from "axios";
 
 const API_URL = "https://jsonplaceholder.typicode.com";
 
-// Async Thunks
 export const fetchPosts = createAsyncThunk("data/fetchPosts", async () => {
   const response = await axios.get(`${API_URL}/posts`);
   return response.data;
@@ -14,7 +13,6 @@ export const fetchUsers = createAsyncThunk("data/fetchUsers", async () => {
   return response.data;
 });
 
-// Slice
 const dataSlice = createSlice({
   name: "data",
   initialState: {
@@ -22,7 +20,7 @@ const dataSlice = createSlice({
     users: [],
     searchQuery: "",
     selectedUserId: null,
-    status: "idle", // idle | loading | succeeded | failed
+    status: "idle",
   },
   reducers: {
     setSearchQuery(state, action) {

@@ -1,37 +1,34 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchPosts, fetchUsers, setSearchQuery, setSelectedUserId } from "../Redux/slice/dataslices";
+import {
+  fetchPosts,
+  fetchUsers,
+  setSearchQuery,
+  setSelectedUserId,
+} from "../Redux/slice/dataslices";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 const List = () => {
   const dispatch = useDispatch();
+  const { posts, users, searchQuery, selectedUserId } = useSelector(
+    (state) => state.data
+  );
 
-  // Access Redux state
-  const { posts, users, searchQuery, selectedUserId } = useSelector((state) => state.data);
-
-  // Fetch posts and users when the component mounts
   useEffect(() => {
     dispatch(fetchPosts());
     dispatch(fetchUsers());
   }, [dispatch]);
 
-  // Filter and search logic
   const filteredPosts = posts.filter((post) => {
-    const matchesSearch = post.title.includes(searchQuery) || post.userId.toString().includes(searchQuery);
+    const matchesSearch =
+      post.title.includes(searchQuery) ||
+      post.userId.toString().includes(searchQuery);
     const matchesUser = selectedUserId ? post.userId === selectedUserId : true;
     return matchesSearch && matchesUser;
   });
 
-  // Infinite scroll - Simulated loader (as data is static, no true infinite scroll)
-  const loadMorePosts = () => {
-    // In a real-world case, this would fetch more data from the server.
-    // Here, it just simulates the effect by dispatching another fetchPosts (no-op for this API).
-    console.log("Load more triggered"); // Placeholder for API logic
-  };
-
   return (
     <div>
-      {/* Search and Filter Section */}
       <div style={{ marginBottom: "20px" }}>
         <input
           type="text"
@@ -41,7 +38,9 @@ const List = () => {
           style={{ marginRight: "10px", padding: "5px" }}
         />
         <select
-          onChange={(e) => dispatch(setSelectedUserId(Number(e.target.value) || null))}
+          onChange={(e) =>
+            dispatch(setSelectedUserId(Number(e.target.value) || null))
+          }
           style={{ padding: "5px" }}
         >
           <option value="">Filter by user</option>
@@ -52,15 +51,18 @@ const List = () => {
           ))}
         </select>
       </div>
-
-      {/* Infinite Scroll Section */}
       <InfiniteScroll
         dataLength={filteredPosts.length}
-        next={loadMorePosts}
-        hasMore={false} // Set to true if fetching more data is implemented
+        hasMore={false}
         loader={<h4>Loading...</h4>}
       >
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px" }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: "10px",
+          }}
+        >
           {filteredPosts.map((post) => (
             <div
               key={post.id}
